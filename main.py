@@ -40,19 +40,15 @@ TABELA_SIMULADA = {
     "Anexo_V_Regulamentado":   {"nominal": 0.195, "deduzir": 21060.00, "iva_interno": 0.4530}
 }
 
-@app.get("/", response_class=HTMLResponse)
-def ler_tela():
-    caminho_html = os.path.join(os.path.dirname(__file__), "index.html")
-    with open(caminho_html, "r", encoding="utf-8") as f:
-        return f.read()
-
-# AUTENTICAÇÃO DIRETA EM MEMÓRIA (RÁPIDA E SEGURA)
+# ROTA DE AUTENTICAÇÃO ATUALIZADA E BLINDADA CONTRA CONFLITOS DE ARQUIVO
 @app.post("/login")
 def login(dados: DadosLogin):
-    # Credenciais fixas de fábrica prontas para validação comercial
-    if dados.usuario == "admin" and dados.senha == "admin123":
+    user_limpo = str(dados.usuario).strip()
+    pass_limpo = str(dados.senha).strip()
+    
+    if user_limpo == "admin" and pass_limpo == "admin123":
         return {"status": "sucesso", "mensagem": "Autenticado com sucesso"}
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Usuário ou senha incorretos")
+    raise HTTPException(status_code=401, detail="Usuário ou senha incorretos")
 
 @app.post("/calcular")
 def calcular_tributacao(dados: DadosSimulacao):
