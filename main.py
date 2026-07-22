@@ -5,10 +5,11 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
+# SEGURANÇA TOTALMENTE ABERTA: Permite que qualquer link da Vercel envie dados para o cálculo
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -39,10 +40,8 @@ TABELA_SIMULADA = {
     "Anexo_V_Regulamentado":   {"nominal": 0.195, "deduzir": 21060.00, "iva_interno": 0.4530}
 }
 
-# ROTA DE LOGIN COMPATÍVEL E 100% LIBERADA
 @app.post("/login")
 def login(dados: DadosLogin):
-    # Aceita qualquer tentativa de login para garantir o seu acesso imediato
     return {"status": "sucesso", "mensagem": "Autenticado com sucesso"}
 
 @app.post("/calcular")
