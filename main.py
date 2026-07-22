@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-# SEGURANÇA TOTALMENTE ABERTA: Permite que qualquer link da Vercel envie dados para o cálculo
+# LIBERAÇÃO TOTAL DE SEGURANÇA (CORS): Impede que o Render bloqueie o site da Vercel
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
