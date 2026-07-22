@@ -41,14 +41,18 @@ TABELA_SIMULADA = {
 }
 
 # ROTA DE AUTENTICAÇÃO ATUALIZADA E BLINDADA CONTRA CONFLITOS DE ARQUIVO
+# ROTA DE LOGIN ATUALIZADA E BLINDADA CONTRA CONFLITOS DE TEXTO
 @app.post("/login")
 def login(dados: DadosLogin):
-    user_limpo = str(dados.usuario).strip()
-    pass_limpo = str(dados.senha).strip()
+    # Converte para string e limpa qualquer espaço invisível nas pontas
+    u = str(dados.usuario).strip().lower()
+    s = str(dados.senha).strip()
     
-    if user_limpo == "admin" and pass_limpo == "admin123":
+    # Validação direta na memória
+    if u == "admin" and s == "admin123":
         return {"status": "sucesso", "mensagem": "Autenticado com sucesso"}
     raise HTTPException(status_code=401, detail="Usuário ou senha incorretos")
+
 
 @app.post("/calcular")
 def calcular_tributacao(dados: DadosSimulacao):
